@@ -1,0 +1,4 @@
+(executable
+ (public_name shopping)
+ (name shopping)
+ (libraries recipe omd))
