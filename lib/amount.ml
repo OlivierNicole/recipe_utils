@@ -105,17 +105,12 @@ module Op = struct
   let (+)
       ({ quantity = q1; unit = unit1 } as a1)
       ({ quantity = q2; unit = unit2 } as a2) =
-    if Unit.equal unit1 unit2 then
-      { quantity = Fractional.Op.(q1 + q2); unit = unit1 }
-    (* If one of the operands is nothing, then it's ok to sum *)
-    else if is_nothing a1 then
+    (* If one of the operands is nothing, then the result is always defined *)
+    if is_nothing a1 then
       a2
     else if is_nothing a2 then
       a1
     else
-      failwith @@
-        Format.asprintf
-          "Don't know how to add units %a and %a"
-          Unit.pp unit1
-          Unit.pp unit2
+      let quantity, unit = Unit.add q1 unit1 q2 unit2 in
+      { quantity; unit }
 end
